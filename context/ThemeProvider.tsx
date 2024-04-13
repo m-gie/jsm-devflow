@@ -15,10 +15,10 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
     // moved it inside useEffect
     const handleThemeChange = () => {
       if (mode === "dark") {
-        setMode("light");
+        //   setMode("light");
         document.documentElement.classList.add("light");
       } else {
-        setMode("dark");
+        //   setMode("dark");
         document.documentElement.classList.add("dark");
       }
     };
