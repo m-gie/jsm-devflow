@@ -71,3 +71,23 @@ export const BADGE_CRITERIA = {
     GOLD: 100000,
   },
 };
+
+export const topQuestions = [
+  {
+    route: "/",
+    title:
+      "Best practices for data fetching in a Next.js application with Server-Side Rendering (SSR)?",
+  },
+  { route: "/", title: "Is it only me or the font is bolder than necessary?" },
+  { route: "/", title: "Redux Toolkit Not Updating State as Expected" },
+  { route: "/", title: "Can I get the course for free?" },
+  { route: "/", title: "Async/Await Function Not Handling Errors Properly" },
+];
+
+export const popularTags = [
+  { route: "/", tag: "nextjs", count: 55 },
+  { route: "/", tag: "react", count: 49 },
+  { route: "/", tag: "css", count: 41 },
+  { route: "/", tag: "next js", count: 37 },
+  { route: "/", tag: "tailwind", count: 12 },
+];
