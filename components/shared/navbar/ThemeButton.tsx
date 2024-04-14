@@ -11,7 +11,7 @@ import {
 } from "@/components/ui/menubar";
 import { themes } from "@/constants";
 
-const Theme = () => {
+const ThemeButton = () => {
   const { mode, setMode } = useTheme();
   return (
     <Menubar className="relative border-none bg-transparent shadow-none">
@@ -21,16 +21,16 @@ const Theme = () => {
             <Image
               src="/assets/icons/sun.svg"
               alt="sun"
-              width={16}
-              height={16}
+              width={20}
+              height={20}
               className="active-theme"
             />
           ) : (
             <Image
               src="/assets/icons/moon.svg"
               alt="moon"
-              width={16}
-              height={16}
+              width={20}
+              height={20}
               className="active-theme"
             />
           )}
@@ -69,4 +69,4 @@ const Theme = () => {
   );
 };
 
-export default Theme;
+export default ThemeButton;
