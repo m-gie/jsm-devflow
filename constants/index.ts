@@ -74,14 +74,17 @@ export const BADGE_CRITERIA = {
 
 export const topQuestions = [
   {
-    route: "/",
+    route: "/q0",
     title:
       "Best practices for data fetching in a Next.js application with Server-Side Rendering (SSR)?",
   },
-  { route: "/", title: "Is it only me or the font is bolder than necessary?" },
-  { route: "/", title: "Redux Toolkit Not Updating State as Expected" },
-  { route: "/", title: "Can I get the course for free?" },
-  { route: "/", title: "Async/Await Function Not Handling Errors Properly" },
+  {
+    route: "/q1",
+    title: "Is it only me or the font is bolder than necessary?",
+  },
+  { route: "/q2", title: "Redux Toolkit Not Updating State as Expected" },
+  { route: "/q3", title: "Can I get the course for free?" },
+  { route: "/q4", title: "Async/Await Function Not Handling Errors Properly" },
 ];
 
 export const popularTags = [
