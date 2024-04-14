@@ -2,6 +2,7 @@ import React from "react";
 import Link from "next/link";
 import { topQuestions, popularTags } from "@/constants";
 import Image from "next/image";
+import RenderTag from "../RenderTag";
 
 const RightSidebar = () => {
   return (
@@ -23,6 +24,7 @@ const RightSidebar = () => {
                 alt="arrow"
                 width={20}
                 height={20}
+                className="invert-colors"
               />
             </Link>
           ))}
@@ -32,16 +34,13 @@ const RightSidebar = () => {
         <h3 className="h3-bold text-dark200_light900">Popular Tags</h3>
         <div className="mt-7 flex w-full flex-col gap-4">
           {popularTags.map((tag) => (
-            <Link
-              key={tag.route}
-              href={tag.route}
-              className="flex cursor-pointer items-center justify-between gap-2"
-            >
-              <div className="subtle-medium background-light800_dark300 text-light400_light500 inline-flex items-center rounded-md border border-none border-transparent bg-slate-900 px-4 py-2 text-xs font-semibold uppercase shadow transition-colors hover:bg-slate-900/80 focus:outline-none focus:ring-2 focus:ring-slate-950 focus:ring-offset-2 dark:border-slate-800 dark:bg-slate-50 dark:text-slate-900 dark:hover:bg-slate-50/80 dark:focus:ring-slate-300">
-                {tag.tag}
-              </div>
-              <p className="body-medium text-dark500_light700">{tag.count}</p>
-            </Link>
+            <RenderTag
+              key={tag._id}
+              _id={tag._id}
+              name={tag.tag}
+              count={tag.count}
+              showCount={true}
+            />
           ))}
         </div>
       </div>

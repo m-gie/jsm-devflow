@@ -85,9 +85,9 @@ export const topQuestions = [
 ];
 
 export const popularTags = [
-  { route: "/", tag: "nextjs", count: 55 },
-  { route: "/", tag: "react", count: 49 },
-  { route: "/", tag: "css", count: 41 },
-  { route: "/", tag: "next js", count: 37 },
-  { route: "/", tag: "tailwind", count: 12 },
+  { _id: "1", tag: "nextjs", count: 55 },
+  { _id: "2", tag: "react", count: 49 },
+  { _id: "3", tag: "css", count: 41 },
+  { _id: "4", tag: "next js", count: 37 },
+  { _id: "5", tag: "tailwind", count: 12 },
 ];
