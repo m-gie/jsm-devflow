@@ -23,7 +23,7 @@ const mockQuestions = [
       picture: "john-next.jpg",
     },
     upvotes: 1001,
-    views: 121,
+    views: 12100,
     answers: [],
     createdAt: new Date("2024-04-15T12:12:23.000Z"),
   },
