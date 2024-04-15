@@ -5,6 +5,47 @@ import LocalSearch from "@/components/shared/search/LocalSearch";
 import Filter from "@/components/shared/Filter";
 import { HomePageFilters } from "@/constants/filters";
 import HomeFilters from "@/components/home/HomeFilters";
+import QuestionCard from "@/components/cards/QuestionCard";
+import NoResult from "@/components/shared/NoResult";
+
+const mockQuestions = [
+  {
+    _id: "1",
+    title:
+      "Best practices for data fetching in a Next.js application with Server-Side Rendering (SSR)?",
+    tags: [
+      { _id: "1", name: "nextjs" },
+      { _id: "2", name: "ssr" },
+    ],
+    author: {
+      _id: "1",
+      name: "John Next",
+      picture: "john-next.jpg",
+    },
+    upvotes: 10,
+    views: 121,
+    answers: [],
+    createdAt: new Date("2024-04-15T12:12:23.000Z"),
+  },
+  {
+    _id: "2",
+    title: "Redux Toolkit Not Updating State as Expected",
+    tags: [
+      { _id: "1", name: "redux" },
+      { _id: "2", name: "react.js" },
+      { _id: "3", name: "react" },
+    ],
+    author: {
+      _id: "2",
+      name: "Bob",
+      picture: "bob.jpg",
+    },
+    upvotes: 21,
+    views: 345,
+    answers: [],
+    createdAt: new Date("2024-04-13T11:37:54.000Z"),
+  },
+];
 
 const Home = () => {
   return (
@@ -33,6 +74,31 @@ const Home = () => {
       </div>
 
       <HomeFilters />
+
+      <div className="mt-10 flex w-full flex-col gap-6">
+        {mockQuestions.length > 0 ? (
+          mockQuestions.map((question) => (
+            <QuestionCard
+              key={question._id}
+              _id={question._id}
+              title={question.title}
+              tags={question.tags}
+              author={question.author}
+              upvotes={question.upvotes}
+              views={question.views}
+              answers={question.answers}
+              createdAt={question.createdAt}
+            />
+          ))
+        ) : (
+          <NoResult
+            title="There are no questions to show"
+            description="Be the first to break the silence! 🚀 Ask a Question and kickstart the discussion. our query could be the next big thing others learn from. Get involved! 💡"
+            link="/ask-question"
+            linkTitle="Ask a Question"
+          />
+        )}
+      </div>
     </>
   );
 };
