@@ -22,7 +22,7 @@ const mockQuestions = [
       name: "John Next",
       picture: "john-next.jpg",
     },
-    upvotes: 10,
+    upvotes: 1001,
     views: 121,
     answers: [],
     createdAt: new Date("2024-04-15T12:12:23.000Z"),
