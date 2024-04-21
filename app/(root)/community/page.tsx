@@ -1,0 +1,63 @@
+import React from "react";
+import LocalSearch from "@/components/shared/search/LocalSearch";
+import Filter from "@/components/shared/Filter";
+import { UserFilters } from "@/constants/filters";
+import NoResult from "@/components/shared/NoResult";
+import UserCard from "@/components/cards/UserCard";
+import { getUsers } from "@/lib/actions/user.action";
+
+const CommunityPage = async () => {
+  //   const result: any = { users: ["unga"] };
+  const result = await getUsers({});
+  return (
+    <>
+      <div className="flex w-full flex-col-reverse justify-between gap-4 sm:flex-row sm:items-center">
+        <h1 className="h1-bold text-dark100_light900">All Users</h1>
+      </div>
+      <div className="mt-11 flex justify-between gap-5 max-sm:flex-col sm:items-center">
+        <LocalSearch
+          route="/community"
+          iconPosition="left"
+          imgSrc="/assets/icons/search.svg"
+          placeholder="Search amazing minds here..."
+          otherClasses="flex-1"
+        />
+        <Filter
+          filters={UserFilters}
+          otherClasses="min-h-[56px] sm:min-w-[170px]"
+          containerClasses="max-md:flex"
+        />
+      </div>
+
+      <div className="mt-10 flex w-full flex-wrap gap-4">
+        {result.users.length > 0 ? (
+          //   <>
+          //     <UserCard />
+          //     <UserCard />
+          //     <UserCard />
+          //     <UserCard />
+          //   </>
+          result.users.map((user) => (
+            <UserCard
+              key={user._id}
+              id={user._id}
+              clerkId={user.clerkId}
+              username={user.username}
+              name={user.name}
+              picture={user.picture}
+            />
+          ))
+        ) : (
+          <NoResult
+            title="There are no users to show"
+            description="Be the first to break the silence! 🚀 Sign in and kickstart the discussion. Get involved! 💡"
+            link="/sign-up"
+            linkTitle="Sign up"
+          />
+        )}
+      </div>
+    </>
+  );
+};
+
+export default CommunityPage;
