@@ -4,7 +4,7 @@ import Filter from "@/components/shared/Filter";
 import { UserFilters } from "@/constants/filters";
 import NoResult from "@/components/shared/NoResult";
 import UserCard from "@/components/cards/UserCard";
-import { getUsers } from "@/lib/actions/user.action";
+import { getUsers } from "@/lib/actions/user.actions";
 
 const CommunityPage = async () => {
   //   const result: any = { users: ["unga"] };

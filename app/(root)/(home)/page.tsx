@@ -7,7 +7,7 @@ import { HomePageFilters } from "@/constants/filters";
 import HomeFilters from "@/components/home/HomeFilters";
 import QuestionCard from "@/components/cards/QuestionCard";
 import NoResult from "@/components/shared/NoResult";
-import { getQuestions } from "@/lib/actions/question.action";
+import { getQuestions } from "@/lib/actions/question.actions";
 
 // const mockQuestions = [
 //   {

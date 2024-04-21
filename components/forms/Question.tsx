@@ -18,7 +18,7 @@ import { Input } from "@/components/ui/input";
 import { questionSchema } from "@/lib/validations";
 import { Badge } from "../ui/badge";
 import Image from "next/image";
-import { createQuestion } from "@/lib/actions/question.action";
+import { createQuestion } from "@/lib/actions/question.actions";
 import { usePathname, useRouter } from "next/navigation";
 
 const type: any = "create";

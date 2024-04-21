@@ -2,7 +2,7 @@ import React from "react";
 import Image from "next/image";
 import RenderTag from "../shared/RenderTag";
 // import Link from "next/link";
-import { getTopInteractedTags } from "@/lib/actions/tag.action";
+import { getTopInteractedTags } from "@/lib/actions/tag.actions";
 import { Badge } from "../ui/badge";
 
 interface UserProps {
