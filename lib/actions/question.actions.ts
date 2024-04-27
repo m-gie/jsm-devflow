@@ -1,9 +1,9 @@
 "use server";
 
-import Question from "@/databse/question.model";
+import Question from "@/database/question.model";
 import { connectToDatabase } from "../mongoose";
-import Tag from "@/databse/tag.model";
-import User from "@/databse/user.model";
+import Tag from "@/database/tag.model";
+import User from "@/database/user.model";
 import {
   CreateQuestionParams,
   GetQuestionByIdParams,
