@@ -7,9 +7,22 @@ import { formatNumber, getTimestamp } from "@/lib/utils";
 import ParseHTML from "@/components/shared/ParseHTML";
 import RenderTag from "@/components/shared/RenderTag";
 import Answer from "@/components/forms/Answer";
+import { auth } from "@clerk/nextjs";
+import { getUserById } from "@/lib/actions/user.actions";
+import AllAnswers from "@/components/shared/AllAnswers";
+import Votes from "@/components/shared/Votes";
 
 const QuestionPage = async ({ params }: { params: { id: string } }) => {
   const result = await getQuestionById({ questionId: params.id });
+  console.log("RESULT");
+  console.log(JSON.stringify(result._id));
+  const { userId: clerkId } = auth();
+
+  let mongoUser;
+
+  if (clerkId) {
+    mongoUser = await getUserById({ userId: clerkId });
+  }
   //   console.log(result);
   return (
     <>
@@ -30,7 +43,9 @@ const QuestionPage = async ({ params }: { params: { id: string } }) => {
               {result.author.name}
             </p>
           </Link>
-          <div className="flex justify-end">VOTING</div>
+          <div className="flex justify-end">
+            <Votes />
+          </div>
         </div>
         <h2 className="h2-semibold text-dark200_light900 mt-3.5 w-full text-left">
           {result.title}
@@ -71,7 +86,18 @@ const QuestionPage = async ({ params }: { params: { id: string } }) => {
           />
         ))}
       </div>
-      <Answer />
+
+      <AllAnswers
+        questionId={result._id}
+        userId={JSON.stringify(mongoUser._id)}
+        totalAnswers={result.answers.length}
+      />
+
+      <Answer
+        question={result.content}
+        questionId={JSON.stringify(result._id)}
+        authorId={JSON.stringify(mongoUser._id)}
+      />
     </>
   );
 };
