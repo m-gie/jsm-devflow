@@ -14,9 +14,9 @@ import Votes from "@/components/shared/Votes";
 
 const QuestionPage = async ({ params }: { params: { id: string } }) => {
   const result = await getQuestionById({ questionId: params.id });
-  console.log("RESULT");
-  console.log(JSON.stringify(result._id));
   const { userId: clerkId } = auth();
+
+  // TODO: Fix error on browsing question details while not authenticated
 
   let mongoUser;
 
@@ -44,7 +44,16 @@ const QuestionPage = async ({ params }: { params: { id: string } }) => {
             </p>
           </Link>
           <div className="flex justify-end">
-            <Votes />
+            <Votes
+              type="question"
+              itemId={JSON.stringify(result._id)}
+              userId={JSON.stringify(mongoUser._id)}
+              upvotes={result.upvotes.length}
+              hasUpvoted={result.upvotes.includes(mongoUser._id)}
+              downvotes={result.downvotes.length}
+              hasDownvoted={result.downvotes.includes(mongoUser._id)}
+              hasSaved={mongoUser?.saved.includes(result._id)}
+            />
           </div>
         </div>
         <h2 className="h2-semibold text-dark200_light900 mt-3.5 w-full text-left">
@@ -89,7 +98,7 @@ const QuestionPage = async ({ params }: { params: { id: string } }) => {
 
       <AllAnswers
         questionId={result._id}
-        userId={JSON.stringify(mongoUser._id)}
+        userId={mongoUser._id}
         totalAnswers={result.answers.length}
       />
 
