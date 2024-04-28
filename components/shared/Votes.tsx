@@ -8,6 +8,7 @@ import {
 } from "@/lib/actions/question.actions";
 import { usePathname } from "next/navigation";
 import { downvoteAnswer, upvoteAnswer } from "@/lib/actions/answer.actions";
+import { toggleSaveQuestion } from "@/lib/actions/user.actions";
 
 interface VotesProps {
   type: string;
@@ -79,7 +80,13 @@ const Votes = ({
     }
   };
 
-  const handleSave = () => {};
+  const handleSave = async () => {
+    await toggleSaveQuestion({
+      userId: JSON.parse(userId),
+      questionId: JSON.parse(itemId),
+      path: pathname,
+    });
+  };
 
   return (
     <div className="flex gap-5">
