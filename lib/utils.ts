@@ -40,3 +40,7 @@ export const formatNumber = (number: number): string => {
   }
   return String(number);
 };
+
+export const formatDate = (date: Date) => {
+  return date.toLocaleString("default", { month: "long", year: "numeric" });
+};
