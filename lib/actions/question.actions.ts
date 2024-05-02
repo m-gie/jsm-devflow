@@ -9,6 +9,7 @@ import {
   GetQuestionByIdParams,
   GetQuestionsParams,
   QuestionVoteParams,
+  GetQuestionsByUserParams,
 } from "./shared.types";
 import { revalidatePath } from "next/cache";
 
@@ -42,6 +43,24 @@ export async function getQuestionById(params: GetQuestionByIdParams) {
         select: "_id clerkId name picture",
       });
     return question;
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+}
+
+export async function getQuestionByUser(params: GetQuestionsByUserParams) {
+  try {
+    connectToDatabase();
+    const { userId, page = 1, pageSize = 10 } = params;
+    const skip = (page - 1) * pageSize;
+    const questions = await Question.find({ author: userId })
+      .sort({ views: -1, upvotes: -1 })
+      .populate("tags", "_id name")
+      .populate("author", "_id name picture")
+      .skip(skip)
+      .limit(pageSize);
+    return { questions };
   } catch (error) {
     console.log(error);
     throw error;

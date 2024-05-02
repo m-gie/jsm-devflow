@@ -5,6 +5,7 @@ import {
   AnswerVoteParams,
   CreateAnswerParams,
   GetAnswersParams,
+  GetQuestionsByUserParams,
 } from "./shared.types";
 import { revalidatePath } from "next/cache";
 import Question from "@/database/question.model";
@@ -112,6 +113,25 @@ export async function downvoteAnswer(params: AnswerVoteParams) {
     // TODO: increment user's reputation
 
     revalidatePath(path);
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+}
+
+export async function getAnswersByUser(params: GetQuestionsByUserParams) {
+  try {
+    connectToDatabase();
+    const { userId, page = 1, pageSize = 10 } = params;
+    const skip = (page - 1) * pageSize;
+    const totalAnswers = await Answer.countDocuments({ author: userId });
+    const answers = await Answer.find({ author: userId })
+      .sort({ upvotes: -1 })
+      .populate("question", "_id title")
+      .populate("author", "_id name picture")
+      .skip(skip)
+      .limit(pageSize);
+    return { totalAnswers, answers };
   } catch (error) {
     console.log(error);
     throw error;
