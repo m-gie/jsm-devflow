@@ -5,7 +5,7 @@ import AnswerCard from "../cards/AnswerCard";
 interface AnswersTabParams {
   searchParams: { [key: string]: string | undefined };
   userId: string;
-  clerkId?: string;
+  clerkId?: string | null;
 }
 
 const AnswersTab = async ({

@@ -4,11 +4,13 @@ import { connectToDatabase } from "../mongoose";
 import {
   AnswerVoteParams,
   CreateAnswerParams,
+  DeleteAnswerParams,
   GetAnswersParams,
   GetQuestionsByUserParams,
 } from "./shared.types";
 import { revalidatePath } from "next/cache";
 import Question from "@/database/question.model";
+import Interaction from "@/database/interaction.model";
 
 export async function getAnswersByQuestionId(params: GetAnswersParams) {
   try {
@@ -128,10 +130,31 @@ export async function getAnswersByUser(params: GetQuestionsByUserParams) {
     const answers = await Answer.find({ author: userId })
       .sort({ upvotes: -1 })
       .populate("question", "_id title")
-      .populate("author", "_id name picture")
+      .populate("author", "_id clerkId name picture")
       .skip(skip)
       .limit(pageSize);
     return { totalAnswers, answers };
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+}
+
+export async function deleteAnswer(params: DeleteAnswerParams) {
+  try {
+    connectToDatabase();
+    const { answerId, path } = params;
+    const answer = await Answer.findById(answerId);
+    if (!answer) {
+      throw new Error("Answer not found");
+    }
+    await Answer.deleteOne({ _id: answerId });
+    await Question.updateMany(
+      { _id: answer.question },
+      { $pull: { answers: answerId } }
+    );
+    await Interaction.deleteMany({ answer: answerId });
+    revalidatePath(path);
   } catch (error) {
     console.log(error);
     throw error;

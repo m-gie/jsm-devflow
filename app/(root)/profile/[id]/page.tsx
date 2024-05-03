@@ -14,7 +14,8 @@ import AnswersTab from "@/components/shared/AnswersTab";
 
 const ProfilePage = async ({ params, searchParams }: URLProps) => {
   const userInfo = await getUserInfo({ userId: params.id });
-  const clerkId = auth();
+  // const clerkId = auth();
+  const { userId: clerkId } = auth();
   return (
     <>
       <div className="flex flex-col-reverse items-start justify-between sm:flex-row">
@@ -61,7 +62,7 @@ const ProfilePage = async ({ params, searchParams }: URLProps) => {
         </div>
         <div className="flex justify-end max-sm:mb-5 max-sm:w-full sm:mt-3">
           <SignedIn>
-            {clerkId.userId === userInfo.user.clerkId && (
+            {clerkId === userInfo.user.clerkId && (
               <Link href="/profile/edit">
                 <Button className="paragraph-medium btn-secondary text-dark300_light900 min-h-[46px] min-w-[175px] px-4 py-3">
                   Edit Profile
@@ -89,14 +90,14 @@ const ProfilePage = async ({ params, searchParams }: URLProps) => {
             <QuestionsTab
               searchParams={searchParams}
               userId={userInfo.user._id}
-              clerkId={userInfo.user.clerkId}
+              clerkId={clerkId}
             />
           </TabsContent>
           <TabsContent value="answers" className="flex w-full flex-col gap-6">
             <AnswersTab
               searchParams={searchParams}
               userId={userInfo.user._id}
-              clerkId={userInfo.user.clerkId}
+              clerkId={clerkId}
             />
           </TabsContent>
         </Tabs>

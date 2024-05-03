@@ -5,7 +5,7 @@ import QuestionCard from "../cards/QuestionCard";
 interface QuestionsTabParams {
   searchParams: { [key: string]: string | undefined };
   userId: string;
-  clerkId?: string;
+  clerkId?: string | null;
 }
 
 const QuestionsTab = async ({
@@ -21,6 +21,7 @@ const QuestionsTab = async ({
         <QuestionCard
           key={question._id}
           _id={question._id}
+          clerkId={clerkId}
           title={question.title}
           tags={question.tags}
           author={question.author}

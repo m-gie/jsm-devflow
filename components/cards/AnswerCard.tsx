@@ -1,6 +1,8 @@
 import Link from "next/link";
 import Metric from "../shared/Metric";
 import { formatNumber, getTimestamp } from "@/lib/utils";
+import { SignedIn } from "@clerk/nextjs";
+import EditDeleteAction from "../shared/EditDeleteAction";
 
 interface Props {
   clerkId?: string | null;
@@ -27,7 +29,7 @@ const AnswerCard = ({
   upvotes,
   createdAt,
 }: Props) => {
-  //   const showActionButtons = clerkId && clerkId === author.clerkId;
+  const showActionButtons = clerkId && clerkId === author.clerkId;
 
   return (
     <Link
@@ -44,11 +46,11 @@ const AnswerCard = ({
           </h3>
         </div>
 
-        {/* <SignedIn>
+        <SignedIn>
           {showActionButtons && (
-            <EditDeleteAction type="Answer" itemId={JSON.stringify(_id)} />
+            <EditDeleteAction type="answer" itemId={JSON.stringify(_id)} />
           )}
-        </SignedIn> */}
+        </SignedIn>
       </div>
 
       <div className="flex-between mt-6 w-full flex-wrap gap-3">
@@ -56,7 +58,7 @@ const AnswerCard = ({
           imgUrl={author.picture}
           alt="user avatar"
           value={author.name}
-          title={` • asked ${getTimestamp(createdAt)}`}
+          title={` • answered ${getTimestamp(createdAt)}`}
           href={`/profile/${author.clerkId}`}
           textStyles="body-medium text-dark400_light700"
           isAuthor
