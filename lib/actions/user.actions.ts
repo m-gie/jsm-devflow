@@ -191,3 +191,13 @@ export async function getUserInfo(params: GetUserByIdParams) {
     throw error;
   }
 }
+
+// export async function updateUser(params: UpdateUserParams) {
+//   try {
+//     connectToDatabase();
+
+//   } catch (error) {
+//     console.log(error);
+//     throw error;
+//   }
+// }
