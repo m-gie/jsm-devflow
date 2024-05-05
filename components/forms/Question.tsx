@@ -35,6 +35,8 @@ const Question = ({ type, mongoUserId, questionDetails }: QuestionProps) => {
   const router = useRouter();
   const pathname = usePathname();
 
+  // TODO: fix a bug here
+
   const parsedQuestionDetails = JSON.parse(questionDetails || "");
 
   const groupedTags = parsedQuestionDetails.tags.map((tag: any) => tag.name);
