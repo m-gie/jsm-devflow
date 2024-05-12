@@ -25,8 +25,6 @@ const LocalSearch = ({
 
   const query = searchParams.get("q");
 
-  console.log(query);
-
   const [search, setSearch] = useState(query || "");
 
   useEffect(() => {
@@ -39,6 +37,8 @@ const LocalSearch = ({
         });
         router.push(newUrl, { scroll: false });
       } else {
+        console.log(pathname);
+        console.log(route);
         if (pathname === route) {
           const newUrl = removeKeysFromQuery({
             params: searchParams.toString(),

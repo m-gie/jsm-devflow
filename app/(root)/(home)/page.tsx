@@ -10,49 +10,8 @@ import NoResult from "@/components/shared/NoResult";
 import { getQuestions } from "@/lib/actions/question.actions";
 import { SearchParamsProps } from "@/types";
 
-// const mockQuestions = [
-//   {
-//     _id: "1",
-//     title:
-//       "Best practices for data fetching in a Next.js application with Server-Side Rendering (SSR)?",
-//     tags: [
-//       { _id: "1", name: "nextjs" },
-//       { _id: "2", name: "ssr" },
-//     ],
-//     author: {
-//       _id: "1",
-//       name: "John Next",
-//       picture: "john-next.jpg",
-//     },
-//     upvotes: 1001,
-//     views: 12100,
-//     answers: [],
-//     createdAt: new Date("2024-04-15T12:12:23.000Z"),
-//   },
-//   {
-//     _id: "2",
-//     title: "Redux Toolkit Not Updating State as Expected",
-//     tags: [
-//       { _id: "1", name: "redux" },
-//       { _id: "2", name: "react.js" },
-//       { _id: "3", name: "react" },
-//     ],
-//     author: {
-//       _id: "2",
-//       name: "Bob",
-//       picture: "bob.jpg",
-//     },
-//     upvotes: 21,
-//     views: 345,
-//     answers: [],
-//     createdAt: new Date("2024-04-13T11:37:54.000Z"),
-//   },
-// ];
-
 const Home = async ({ searchParams }: SearchParamsProps) => {
   const result = await getQuestions({ searchQuery: searchParams.q });
-
-  // console.log(result.questions);
 
   return (
     <>

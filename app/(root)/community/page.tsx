@@ -5,10 +5,10 @@ import { UserFilters } from "@/constants/filters";
 import NoResult from "@/components/shared/NoResult";
 import UserCard from "@/components/cards/UserCard";
 import { getUsers } from "@/lib/actions/user.actions";
+import { SearchParamsProps } from "@/types";
 
-const CommunityPage = async () => {
-  //   const result: any = { users: ["unga"] };
-  const result = await getUsers({});
+const CommunityPage = async ({ searchParams }: SearchParamsProps) => {
+  const result = await getUsers({ searchQuery: searchParams.q });
   return (
     <>
       <div className="flex w-full flex-col-reverse justify-between gap-4 sm:flex-row sm:items-center">
@@ -31,12 +31,6 @@ const CommunityPage = async () => {
 
       <div className="mt-10 flex w-full flex-wrap gap-4">
         {result.users.length > 0 ? (
-          //   <>
-          //     <UserCard />
-          //     <UserCard />
-          //     <UserCard />
-          //     <UserCard />
-          //   </>
           result.users.map((user) => (
             <UserCard
               key={user._id}

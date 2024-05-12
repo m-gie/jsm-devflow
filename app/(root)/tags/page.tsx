@@ -5,10 +5,10 @@ import { TagFilters } from "@/constants/filters";
 import { getTags } from "@/lib/actions/tag.actions";
 import NoResult from "@/components/shared/NoResult";
 import TagCard from "@/components/cards/TagCard";
+import { SearchParamsProps } from "@/types";
 
-const TagsPage = async () => {
-  const result = await getTags({});
-  console.log(result);
+const TagsPage = async ({ searchParams }: SearchParamsProps) => {
+  const result = await getTags({ searchQuery: searchParams.q });
   return (
     <>
       <div className="flex w-full flex-col-reverse justify-between gap-4 sm:flex-row sm:items-center">
