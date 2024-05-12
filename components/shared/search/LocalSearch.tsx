@@ -1,7 +1,10 @@
 "use client";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import { Input } from "@/components/ui/input";
+// import { useRouter } from "next/router";
+import { usePathname, useSearchParams, useRouter } from "next/navigation";
+import { formUrlQuery, removeKeysFromQuery } from "@/lib/utils";
 
 const LocalSearch = ({
   route,
@@ -16,6 +19,38 @@ const LocalSearch = ({
   imgSrc: string;
   otherClasses?: string;
 }) => {
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+
+  const query = searchParams.get("q");
+
+  console.log(query);
+
+  const [search, setSearch] = useState(query || "");
+
+  useEffect(() => {
+    const delayDebounceFunction = setTimeout(() => {
+      if (search) {
+        const newUrl = formUrlQuery({
+          params: searchParams.toString(),
+          key: "q",
+          value: search,
+        });
+        router.push(newUrl, { scroll: false });
+      } else {
+        if (pathname === route) {
+          const newUrl = removeKeysFromQuery({
+            params: searchParams.toString(),
+            keysToRemove: ["q"],
+          });
+          router.push(newUrl, { scroll: false });
+        }
+      }
+    }, 500);
+    return () => clearTimeout(delayDebounceFunction);
+  }, [search, route, pathname, router, searchParams, query]);
+
   return (
     <div
       className={`background-light800_darkgradient flex min-h-[56px] grow items-center gap-4 rounded-xl px-4 ${otherClasses}`}
@@ -32,8 +67,10 @@ const LocalSearch = ({
       <Input
         type="text"
         placeholder={placeholder}
-        value=""
-        onChange={() => {}}
+        value={search}
+        onChange={(e) => {
+          setSearch(e.target.value);
+        }}
         className="paragraph-regular no-focus placeholder background-light800_darkgradient rounded-xl border-none shadow-none outline-none"
       />
       {iconPosition === "right" && (
