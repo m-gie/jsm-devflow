@@ -22,8 +22,6 @@ const QuestionPage = async ({
   const result = await getQuestionById({ questionId: params.id });
   const { userId: clerkId } = auth();
 
-  // TODO: Fix error on browsing question details while not authenticated
-
   let mongoUser;
 
   if (clerkId) {
@@ -53,11 +51,11 @@ const QuestionPage = async ({
             <Votes
               type="question"
               itemId={JSON.stringify(result._id)}
-              userId={JSON.stringify(mongoUser._id)}
+              userId={JSON.stringify(mongoUser?._id)}
               upvotes={result.upvotes.length}
-              hasUpvoted={result.upvotes.includes(mongoUser._id)}
+              hasUpvoted={result.upvotes.includes(mongoUser?._id)}
               downvotes={result.downvotes.length}
-              hasDownvoted={result.downvotes.includes(mongoUser._id)}
+              hasDownvoted={result.downvotes.includes(mongoUser?._id)}
               hasSaved={mongoUser?.saved.includes(result._id)}
             />
           </div>
@@ -104,17 +102,18 @@ const QuestionPage = async ({
 
       <AllAnswers
         questionId={result._id}
-        userId={mongoUser._id}
+        userId={mongoUser?._id}
         totalAnswers={result.answers.length}
         page={searchParams?.page}
         filter={searchParams?.filter}
       />
-
-      <Answer
-        question={result.content}
-        questionId={JSON.stringify(result._id)}
-        authorId={JSON.stringify(mongoUser._id)}
-      />
+      {mongoUser && (
+        <Answer
+          question={result.content}
+          questionId={JSON.stringify(result._id)}
+          authorId={JSON.stringify(mongoUser._id)}
+        />
+      )}
     </>
   );
 };
