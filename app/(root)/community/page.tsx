@@ -8,7 +8,10 @@ import { getUsers } from "@/lib/actions/user.actions";
 import { SearchParamsProps } from "@/types";
 
 const CommunityPage = async ({ searchParams }: SearchParamsProps) => {
-  const result = await getUsers({ searchQuery: searchParams.q });
+  const result = await getUsers({
+    searchQuery: searchParams.q,
+    filter: searchParams.filter,
+  });
   return (
     <>
       <div className="flex w-full flex-col-reverse justify-between gap-4 sm:flex-row sm:items-center">

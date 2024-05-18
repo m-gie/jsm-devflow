@@ -15,11 +15,30 @@ import Interaction from "@/database/interaction.model";
 export async function getAnswersByQuestionId(params: GetAnswersParams) {
   try {
     connectToDatabase();
-    const { questionId } = params;
+    const { questionId, sortBy } = params;
+
+    let sortOptions = {};
+
+    switch (sortBy) {
+      case "highest_upvotes":
+        sortOptions = { upvotes: -1 };
+        break;
+      case "lowest_upvotes":
+        sortOptions = { upvotes: 1 };
+        break;
+      case "recent":
+        sortOptions = { createdAt: -1 };
+        break;
+      case "old":
+        sortOptions = { createdAt: 1 };
+        break;
+      default:
+        break;
+    }
 
     const answers = await Answer.find({ question: questionId })
       .populate("author", "_id clerkId name picture")
-      .sort({ createdAt: -1 });
+      .sort(sortOptions);
 
     return { answers };
   } catch (error) {

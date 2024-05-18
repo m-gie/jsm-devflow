@@ -37,8 +37,6 @@ const LocalSearch = ({
         });
         router.push(newUrl, { scroll: false });
       } else {
-        console.log(pathname);
-        console.log(route);
         if (pathname === route) {
           const newUrl = removeKeysFromQuery({
             params: searchParams.toString(),
