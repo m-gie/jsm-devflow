@@ -9,15 +9,16 @@ import QuestionCard from "@/components/cards/QuestionCard";
 import NoResult from "@/components/shared/NoResult";
 import { getQuestions } from "@/lib/actions/question.actions";
 import { SearchParamsProps } from "@/types";
+import { auth } from "@clerk/nextjs";
 
 const Home = async ({ searchParams }: SearchParamsProps) => {
   const result = await getQuestions({
     searchQuery: searchParams.q,
     filter: searchParams.filter,
   });
+  const { userId: clerkId } = auth();
 
   // TODO: Fetch recomended questions
-
   return (
     <>
       <div className="flex w-full flex-col-reverse justify-between gap-4 sm:flex-row sm:items-center">
@@ -51,7 +52,7 @@ const Home = async ({ searchParams }: SearchParamsProps) => {
             <QuestionCard
               key={question._id}
               _id={question._id}
-              clerkId={question.author.clerkId}
+              clerkId={clerkId}
               title={question.title}
               tags={question.tags}
               author={question.author}
