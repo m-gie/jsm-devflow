@@ -12,6 +12,7 @@ import {
   GetQuestionsByUserParams,
   DeleteQuestionParams,
   EditQuestionParams,
+  GetQuestionsByTagIdParams,
 } from "./shared.types";
 import { revalidatePath } from "next/cache";
 import Answer from "@/database/answer.model";
@@ -90,18 +91,60 @@ export async function getQuestionById(params: GetQuestionByIdParams) {
   }
 }
 
+export async function getQuestionsByTagId(params: GetQuestionsByTagIdParams) {
+  try {
+    connectToDatabase();
+    const { tagId, searchQuery, page = 1, pageSize = 20 } = params;
+    const skipAmount = (page - 1) * pageSize;
+
+    const tagFilter: FilterQuery<typeof Tag> = { _id: tagId };
+
+    const tag = await Tag.findOne(tagFilter).populate({
+      path: "questions",
+      model: Question,
+      match: searchQuery
+        ? { title: { $regex: new RegExp(searchQuery, "i") } }
+        : {},
+      options: {
+        sort: { createdAt: -1 },
+        skip: skipAmount,
+        limit: pageSize + 1,
+      },
+      populate: [
+        { path: "tags", model: Tag, select: "_id name" },
+        { path: "author", model: User, select: "_id clerkId name picture" },
+      ],
+    });
+
+    if (!tag) {
+      throw new Error("Tag not found");
+    }
+    const isNext = tag.questions.length > pageSize;
+    const questions = tag.questions;
+
+    return { tagTitle: tag.name, questions, isNext };
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+}
+
 export async function getQuestionByUser(params: GetQuestionsByUserParams) {
   try {
     connectToDatabase();
     const { userId, page = 1, pageSize = 10 } = params;
-    const skip = (page - 1) * pageSize;
+    const skipAmount = (page - 1) * pageSize;
     const questions = await Question.find({ author: userId })
       .sort({ views: -1, upvotes: -1 })
       .populate("tags", "_id name")
       .populate("author", "clerkId name picture")
-      .skip(skip)
+      .skip(skipAmount)
       .limit(pageSize);
-    return { questions };
+
+    const totalQuestions = await Question.countDocuments({ author: userId });
+    const isNext = totalQuestions > skipAmount + questions.length;
+
+    return { questions, isNext };
   } catch (error) {
     console.log(error);
     throw error;

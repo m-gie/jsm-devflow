@@ -98,6 +98,7 @@ const Answer = ({ question, questionId, authorId }: AnswerProps) => {
                     initialValue=""
                     init={{
                       height: 350,
+                      resize: "both",
                       menubar: false,
                       plugins: [
                         "advlist",

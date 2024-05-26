@@ -15,8 +15,8 @@ import Interaction from "@/database/interaction.model";
 export async function getAnswersByQuestionId(params: GetAnswersParams) {
   try {
     connectToDatabase();
-    const { questionId, sortBy } = params;
-
+    const { questionId, sortBy, page = 1, pageSize = 10 } = params;
+    const skipAmount = (page - 1) * pageSize;
     let sortOptions = {};
 
     switch (sortBy) {
@@ -35,12 +35,19 @@ export async function getAnswersByQuestionId(params: GetAnswersParams) {
       default:
         break;
     }
-
+    const totalAnswers = await Answer.countDocuments({ question: questionId });
     const answers = await Answer.find({ question: questionId })
       .populate("author", "_id clerkId name picture")
-      .sort(sortOptions);
+      .sort(sortOptions)
+      .skip(skipAmount)
+      .limit(pageSize);
 
-    return { answers };
+    console.log("answers", skipAmount + pageSize);
+    console.log("totalAnswers", totalAnswers);
+
+    const isNext = totalAnswers > skipAmount + answers.length;
+
+    return { answers, isNext };
   } catch (error) {
     console.log(error);
     throw error;
@@ -144,15 +151,18 @@ export async function getAnswersByUser(params: GetQuestionsByUserParams) {
   try {
     connectToDatabase();
     const { userId, page = 1, pageSize = 10 } = params;
-    const skip = (page - 1) * pageSize;
+    const skipAmount = (page - 1) * pageSize;
     const totalAnswers = await Answer.countDocuments({ author: userId });
     const answers = await Answer.find({ author: userId })
       .sort({ upvotes: -1 })
       .populate("question", "_id title")
       .populate("author", "_id clerkId name picture")
-      .skip(skip)
+      .skip(skipAmount)
       .limit(pageSize);
-    return { totalAnswers, answers };
+
+    const isNext = totalAnswers > skipAmount + answers.length;
+
+    return { totalAnswers, answers, isNext };
   } catch (error) {
     console.log(error);
     throw error;

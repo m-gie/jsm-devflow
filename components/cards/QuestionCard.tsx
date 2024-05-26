@@ -52,7 +52,6 @@ const QuestionCard = ({
             </h3>
           </Link>
         </div>
-        {/* TODO: If signed in add edit delete actions */}
         <SignedIn>
           {showActionButtons && (
             <EditDeleteAction type="question" itemId={JSON.stringify(_id)} />
