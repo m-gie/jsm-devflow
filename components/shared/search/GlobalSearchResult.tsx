@@ -5,6 +5,7 @@ import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
 import GlobalFilters from "./GlobalFilters";
+import { globalSearch } from "@/lib/actions/general.actions";
 
 const GlobalSearchResult = () => {
   const searchParams = useSearchParams();
@@ -24,6 +25,8 @@ const GlobalSearchResult = () => {
       setResult([]);
       try {
         // Fetch everything
+        const result = await globalSearch({ query: global, type });
+        setResult(JSON.parse(result));
       } catch (error) {
         console.log(error);
         throw error;
@@ -31,10 +34,24 @@ const GlobalSearchResult = () => {
         setIsLoading(false);
       }
     };
+    if (global) {
+      fetchResults();
+    }
   }, [global, type]);
 
   const renderLink = (type: string, id: string) => {
-    return "/";
+    switch (type) {
+      case "question":
+        return `/question/${id}`;
+      case "tag":
+        return `/tags/${id}`;
+      case "user":
+        return `/profile/${id}`;
+      case "answer":
+        return `/question/${id}`;
+      default:
+        return "/";
+    }
   };
 
   return (
@@ -60,7 +77,7 @@ const GlobalSearchResult = () => {
               result.map((item: any, index: number) => (
                 <Link
                   key={item.type + item.id + index}
-                  href={renderLink("type", "id")}
+                  href={renderLink(item.type, item.id)}
                   className="flex w-full cursor-pointer items-start gap-3 rounded-xl px-5 py-2.5 hover:bg-light-700/50 dark:hover:bg-dark-500/50"
                 >
                   <Image

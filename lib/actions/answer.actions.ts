@@ -42,9 +42,6 @@ export async function getAnswersByQuestionId(params: GetAnswersParams) {
       .skip(skipAmount)
       .limit(pageSize);
 
-    console.log("answers", skipAmount + pageSize);
-    console.log("totalAnswers", totalAnswers);
-
     const isNext = totalAnswers > skipAmount + answers.length;
 
     return { answers, isNext };
