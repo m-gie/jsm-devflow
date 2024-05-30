@@ -135,7 +135,7 @@ export async function getQuestionByUser(params: GetQuestionsByUserParams) {
     const { userId, page = 1, pageSize = 10 } = params;
     const skipAmount = (page - 1) * pageSize;
     const questions = await Question.find({ author: userId })
-      .sort({ views: -1, upvotes: -1 })
+      .sort({ createdAt: -1, views: -1, upvotes: -1 })
       .populate("tags", "_id name")
       .populate("author", "clerkId name picture")
       .skip(skipAmount)
@@ -176,9 +176,17 @@ export async function createQuestion(params: CreateQuestionParams) {
     await Question.findByIdAndUpdate(question._id, {
       $push: { tags: { $each: tagDocuments } },
     });
-    revalidatePath(path);
     // Create an interaction record for the user's ask_question action
     // Increment author's reputation for creating a question
+    await Interaction.create({
+      user: author,
+      action: "ask_question",
+      question: question._id,
+      tags: tagDocuments,
+    });
+    await User.findByIdAndUpdate(author, { $inc: { reputation: 5 } });
+
+    revalidatePath(path);
   } catch (error) {}
 }
 
@@ -208,7 +216,13 @@ export async function upvoteQuestion(params: QuestionVoteParams) {
       throw new Error("Question not found");
     }
 
-    // TODO: Increment user's reputation
+    // TODO: Fix a bug where points are calculated incorrectly when a user upvotes previously downvoted question
+    await User.findByIdAndUpdate(userId, {
+      $inc: { reputation: hasUpvoted ? -1 : 1 },
+    });
+    await User.findByIdAndUpdate(question.author, {
+      $inc: { reputation: hasUpvoted ? -10 : 10 },
+    });
 
     revalidatePath(path);
   } catch (error) {
@@ -243,7 +257,13 @@ export async function downvoteQuestion(params: QuestionVoteParams) {
       throw new Error("Question not found");
     }
 
-    // TODO: Increment user's reputation
+    // TODO: Fix a bug where points are calculated incorrectly when a user upvotes previously downvoted question
+    await User.findByIdAndUpdate(userId, {
+      $inc: { reputation: hasDownvoted ? -1 : 1 },
+    });
+    await User.findByIdAndUpdate(question.author, {
+      $inc: { reputation: hasDownvoted ? 10 : -10 },
+    });
 
     revalidatePath(path);
   } catch (error) {

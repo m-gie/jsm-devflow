@@ -35,7 +35,6 @@ const Votes = ({
   const pathname = usePathname();
   const router = useRouter();
 
-  // TODO: FIX THIS!!! useEffect loop
   useEffect(() => {
     viewQuestion({
       questionId: JSON.parse(itemId),
