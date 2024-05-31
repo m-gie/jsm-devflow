@@ -16,8 +16,11 @@ interface UserProps {
 const UserCard = async (props: UserProps) => {
   const interactedTags = await getTopInteractedTags({ userId: props.id });
   return (
-    <Link href={`/profile/${props.clerkId}`} suppressHydrationWarning>
-      <div className="shadow-light100_darknone background-light900_dark200 light-border flex w-full flex-col items-center justify-center rounded-2xl border p-8 max-xs:min-w-full xs:w-[260px] ">
+    <div className="shadow-light100_darknone background-light900_dark200 light-border flex w-full flex-col items-center justify-center rounded-2xl border p-8 max-xs:min-w-full xs:w-[260px] ">
+      <Link
+        href={`/profile/${props.clerkId}`}
+        className="flex flex-col items-center"
+      >
         <Image
           src={props.picture}
           alt="user avatar"
@@ -33,20 +36,21 @@ const UserCard = async (props: UserProps) => {
             @{props.username}
           </p>
         </div>
-        <div className="mt-6">
-          {interactedTags.length > 0 ? (
-            <div className="flex items-center gap-2">
-              {interactedTags.map((tag) => (
-                // TODO: fix hydration error here - RenderTag contains a Link, which cannot be rendered inside a Link declared in this file.
-                <RenderTag key={tag._id} _id={tag._id} name={tag.name} />
-              ))}
-            </div>
-          ) : (
-            <Badge>No tags yet</Badge>
-          )}
-        </div>
+      </Link>
+
+      <div className="mt-6">
+        {interactedTags.length > 0 ? (
+          <div className="flex items-center gap-2">
+            {interactedTags.map((tag) => (
+              // TODO: fix hydration error here - RenderTag contains a Link, which cannot be rendered inside a Link declared in this file.
+              <RenderTag key={tag._id} _id={tag._id} name={tag.name} />
+            ))}
+          </div>
+        ) : (
+          <Badge>No tags yet</Badge>
+        )}
       </div>
-    </Link>
+    </div>
   );
 };
 
