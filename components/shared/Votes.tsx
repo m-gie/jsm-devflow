@@ -10,6 +10,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { downvoteAnswer, upvoteAnswer } from "@/lib/actions/answer.actions";
 import { toggleSaveQuestion } from "@/lib/actions/user.actions";
 import { viewQuestion } from "@/lib/actions/interaction.actions";
+import { toast } from "../ui/use-toast";
 
 interface VotesProps {
   type: string;
@@ -44,7 +45,10 @@ const Votes = ({
 
   const handleVote = async (action: "upvote" | "downvote") => {
     if (!userId) {
-      return;
+      return toast({
+        title: "Please log in.",
+        description: "You need to be logged in to vote.",
+      });
     }
     if (action === "upvote") {
       if (type === "question") {
@@ -64,8 +68,10 @@ const Votes = ({
           path: pathname,
         });
       }
-      // TODO: Show a toast
-      return;
+      return toast({
+        title: `Upvote ${!hasUpvoted ? "added" : "removed"}.`,
+        variant: !hasUpvoted ? "default" : "destructive",
+      });
     }
     if (action === "downvote") {
       if (type === "question") {
@@ -85,7 +91,10 @@ const Votes = ({
           path: pathname,
         });
       }
-      // TODO: Show a toast
+      return toast({
+        title: `Downvote ${!hasDownvoted ? "added" : "removed"}.`,
+        variant: !hasDownvoted ? "default" : "destructive",
+      });
     }
   };
 
@@ -94,6 +103,10 @@ const Votes = ({
       userId: JSON.parse(userId),
       questionId: JSON.parse(itemId),
       path: pathname,
+    });
+    return toast({
+      title: `Question ${!hasSaved ? "saved in" : "removed from"} your collection.`,
+      variant: !hasSaved ? "default" : "destructive",
     });
   };
 
