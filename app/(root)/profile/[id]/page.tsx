@@ -11,6 +11,12 @@ import ProfileLink from "@/components/shared/ProfileLink";
 import Stats from "@/components/shared/Stats";
 import QuestionsTab from "@/components/shared/QuestionsTab";
 import AnswersTab from "@/components/shared/AnswersTab";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Profile | DevOverflow",
+  description: "Your profile page. See your stats, posts, and answers.",
+};
 
 const ProfilePage = async ({ params, searchParams }: URLProps) => {
   const userInfo = await getUserInfo({ userId: params.id });

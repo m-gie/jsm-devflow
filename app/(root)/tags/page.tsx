@@ -7,6 +7,12 @@ import NoResult from "@/components/shared/NoResult";
 import TagCard from "@/components/cards/TagCard";
 import { SearchParamsProps } from "@/types";
 import Pagination from "@/components/shared/Pagination";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Tags | DevOverflow",
+  description: "Explore tags and find questions related to your interests.",
+};
 
 const TagsPage = async ({ searchParams }: SearchParamsProps) => {
   const result = await getTags({

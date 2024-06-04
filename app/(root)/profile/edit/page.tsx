@@ -2,6 +2,12 @@ import Profile from "@/components/forms/Profile";
 import { getUserById } from "@/lib/actions/user.actions";
 import { auth } from "@clerk/nextjs";
 import React from "react";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Edit profile | DevOverflow",
+  description: "Edit your profile. Change your name, username, and more.",
+};
 
 const EditProfile = async () => {
   const { userId } = auth();

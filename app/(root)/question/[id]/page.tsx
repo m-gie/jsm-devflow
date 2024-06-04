@@ -11,6 +11,13 @@ import { auth } from "@clerk/nextjs";
 import { getUserById } from "@/lib/actions/user.actions";
 import AllAnswers from "@/components/shared/AllAnswers";
 import Votes from "@/components/shared/Votes";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Question | DevOverflow",
+  description:
+    "Get answers to your questions from the community. Ask a question and get answers from pros around the world.",
+};
 
 const QuestionPage = async ({
   params,

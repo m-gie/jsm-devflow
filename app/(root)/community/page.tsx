@@ -7,6 +7,12 @@ import UserCard from "@/components/cards/UserCard";
 import { getUsers } from "@/lib/actions/user.actions";
 import { SearchParamsProps } from "@/types";
 import Pagination from "@/components/shared/Pagination";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Collection | DevOverflow",
+  description: "Collection of your saved questions",
+};
 
 const CommunityPage = async ({ searchParams }: SearchParamsProps) => {
   const result = await getUsers({

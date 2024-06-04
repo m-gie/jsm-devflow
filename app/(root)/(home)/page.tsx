@@ -11,6 +11,13 @@ import { getQuestions } from "@/lib/actions/question.actions";
 import { SearchParamsProps } from "@/types";
 import { auth } from "@clerk/nextjs";
 import Pagination from "@/components/shared/Pagination";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Home | DevOverflow",
+  description:
+    "Get answers to your questions from the community. Ask a question and get answers from pros around the world.",
+};
 
 const Home = async ({ searchParams }: SearchParamsProps) => {
   const result = await getQuestions({
