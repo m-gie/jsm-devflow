@@ -7,7 +7,10 @@ import { HomePageFilters } from "@/constants/filters";
 import HomeFilters from "@/components/home/HomeFilters";
 import QuestionCard from "@/components/cards/QuestionCard";
 import NoResult from "@/components/shared/NoResult";
-import { getQuestions } from "@/lib/actions/question.actions";
+import {
+  getQuestions,
+  getRecommendedQuestions,
+} from "@/lib/actions/question.actions";
 import { SearchParamsProps } from "@/types";
 import { auth } from "@clerk/nextjs";
 import Pagination from "@/components/shared/Pagination";
@@ -20,14 +23,32 @@ export const metadata: Metadata = {
 };
 
 const Home = async ({ searchParams }: SearchParamsProps) => {
-  const result = await getQuestions({
-    searchQuery: searchParams.q,
-    filter: searchParams.filter,
-    page: searchParams.page ? +searchParams.page : 1,
-  });
   const { userId: clerkId } = auth();
 
-  // TODO: Fetch recomended questions
+  let result;
+  // TODO: Refactor this
+  if (searchParams?.filter === "recomended") {
+    if (clerkId) {
+      result = await getRecommendedQuestions({
+        userId: clerkId,
+        searchQuery: searchParams.q,
+        page: searchParams.page ? +searchParams.page : 1,
+      });
+    } else {
+      result = await getQuestions({
+        searchQuery: searchParams.q,
+        filter: searchParams.filter,
+        page: searchParams.page ? +searchParams.page : 1,
+      });
+    }
+  } else {
+    result = await getQuestions({
+      searchQuery: searchParams.q,
+      filter: searchParams.filter,
+      page: searchParams.page ? +searchParams.page : 1,
+    });
+  }
+
   return (
     <>
       <div className="flex w-full flex-col-reverse justify-between gap-4 sm:flex-row sm:items-center">
