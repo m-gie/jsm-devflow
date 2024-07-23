@@ -60,7 +60,7 @@ const MobileNav = () => {
       </SheetTrigger>
       <SheetContent
         side="left"
-        className="background-light900_dark200 border-none"
+        className="background-light900_dark200 no-scrollbar overflow-y-auto border-none"
       >
         <Link href="/" className="flex items-center gap-1">
           <Image
