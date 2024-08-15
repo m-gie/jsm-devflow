@@ -12,7 +12,7 @@ import {
   getRecommendedQuestions,
 } from "@/lib/actions/question.actions";
 import { SearchParamsProps } from "@/types";
-import { auth } from "@clerk/nextjs";
+import { auth } from "@clerk/nextjs/server";
 import Pagination from "@/components/shared/Pagination";
 import type { Metadata } from "next";
 

@@ -9,9 +9,11 @@ import { SignedOut, SignedIn, SignOutButton, useAuth } from "@clerk/nextjs";
 
 const LeftSidebar = () => {
   const pathname = usePathname();
-  const userId = useAuth();
+  const auth = useAuth();
+
   return (
     <section className="custom-scrollbar background-light900_dark200 light-border sticky left-0 top-0 flex h-screen w-fit flex-col justify-between overflow-y-auto border-r p-6 pt-36 shadow-light-300 dark:shadow-none max-sm:hidden lg:w-[266px]">
+      {auth.isSignedIn && <div className="text-white">UNGA</div>}
       <div className="flex flex-1 flex-col gap-6">
         {sidebarLinks.map((link) => {
           const isActive =
@@ -19,32 +21,36 @@ const LeftSidebar = () => {
             pathname === link.route;
 
           if (link.route === "/profile") {
-            if (userId.userId) {
-              link.route = `${link.route}/${userId.userId}`;
+            if (auth.isSignedIn) {
+              link.route = `${link.route}/${auth.userId}`;
             } else {
               return null;
             }
           }
 
           return (
-            <Link
-              key={link.route}
-              href={link.route}
-              className={`${isActive ? "primary-gradient rounded-lg text-light-900" : "text-dark300_light900"} flex items-center justify-start gap-4 bg-transparent p-4`}
-            >
-              <Image
-                src={link.imgURL}
-                alt={link.label}
-                width={20}
-                height={20}
-                className={`${isActive ? "" : "invert-colors"}`}
-              />
-              <p
-                className={`${isActive ? "base-bold" : "base-medium"} max-lg:hidden`}
-              >
-                {link.label}
-              </p>
-            </Link>
+            <div key={link.route}>
+              {!auth.isSignedIn && link.route.includes("/profile") ? null : (
+                <Link
+                  key={link.route}
+                  href={link.route}
+                  className={`${isActive ? "primary-gradient rounded-lg text-light-900" : "text-dark300_light900"} flex items-center justify-start gap-4 bg-transparent p-4`}
+                >
+                  <Image
+                    src={link.imgURL}
+                    alt={link.label}
+                    width={20}
+                    height={20}
+                    className={`${isActive ? "" : "invert-colors"}`}
+                  />
+                  <p
+                    className={`${isActive ? "base-bold" : "base-medium"} max-lg:hidden`}
+                  >
+                    {link.label}
+                  </p>
+                </Link>
+              )}
+            </div>
           );
         })}
       </div>
