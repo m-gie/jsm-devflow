@@ -26,8 +26,7 @@ const Home = async ({ searchParams }: SearchParamsProps) => {
   const { userId: clerkId } = auth();
 
   let result;
-  // TODO: Refactor this
-  if (searchParams?.filter === "recomended") {
+  if (searchParams?.filter === "recommended") {
     if (clerkId) {
       result = await getRecommendedQuestions({
         userId: clerkId,

@@ -13,6 +13,13 @@ export async function viewQuestion(params: ViewQuestionParams) {
 
     //  Update view count for question we're viewing
 
+    const question = await Question.findOne({ _id: questionId });
+    console.log(question);
+    if (!question) {
+      console.log("Question not found");
+      return;
+    }
+
     await Question.findByIdAndUpdate(questionId, { $inc: { views: 1 } });
 
     if (userId) {
@@ -28,6 +35,7 @@ export async function viewQuestion(params: ViewQuestionParams) {
         user: userId,
         action: "view",
         question: questionId,
+        tags: question.tags,
       });
     }
   } catch (error) {
