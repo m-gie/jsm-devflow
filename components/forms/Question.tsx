@@ -45,7 +45,7 @@ const Question = ({ type, mongoUserId, questionDetails }: QuestionProps) => {
     if (parsedQuestionDetails) {
       setEditorValue(parsedQuestionDetails.content);
     }
-  }, [parsedQuestionDetails]);
+  }, []);
 
   // 1. Define your form.
   const form = useForm<z.infer<typeof questionSchema>>({
