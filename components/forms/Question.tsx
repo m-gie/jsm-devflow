@@ -1,5 +1,5 @@
 "use client";
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Editor } from "@tinymce/tinymce-react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -34,11 +34,18 @@ const Question = ({ type, mongoUserId, questionDetails }: QuestionProps) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const router = useRouter();
   const pathname = usePathname();
+  const [editorValue, setEditorValue] = useState("");
 
   const parsedQuestionDetails =
     questionDetails && JSON.parse(questionDetails || "");
 
   const groupedTags = parsedQuestionDetails?.tags.map((tag: any) => tag.name);
+  useEffect(() => {
+    if (questionDetails) {
+      const question = JSON.parse(questionDetails || "");
+      setEditorValue(question.content);
+    }
+  }, [questionDetails]);
 
   // 1. Define your form.
   const form = useForm<z.infer<typeof questionSchema>>({
@@ -153,14 +160,17 @@ const Question = ({ type, mongoUserId, questionDetails }: QuestionProps) => {
                 Detailed explanation of your problem{" "}
                 <span className="text-primary-500">*</span>
               </FormLabel>
-              <FormControl className="mt-3.5">
+              <FormControl className="mt-3.5" key={mode}>
                 <Editor
                   apiKey={process.env.NEXT_PUBLIC_TINY_EDITOR_API_KEY}
                   // @ts-ignore
                   onInit={(evt, editor) => (editorRef.current = editor)}
                   onBlur={field.onBlur}
-                  onEditorChange={(content) => field.onChange(content)}
-                  initialValue={parsedQuestionDetails?.content || ""}
+                  onEditorChange={(content) => {
+                    field.onChange(content);
+                    setEditorValue(content);
+                  }}
+                  value={editorValue}
                   init={{
                     height: 350,
                     menubar: false,
