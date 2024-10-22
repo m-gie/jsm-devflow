@@ -40,12 +40,12 @@ const Question = ({ type, mongoUserId, questionDetails }: QuestionProps) => {
     questionDetails && JSON.parse(questionDetails || "");
 
   const groupedTags = parsedQuestionDetails?.tags.map((tag: any) => tag.name);
+
   useEffect(() => {
-    if (questionDetails) {
-      const question = JSON.parse(questionDetails || "");
-      setEditorValue(question.content);
+    if (parsedQuestionDetails) {
+      setEditorValue(parsedQuestionDetails.content);
     }
-  }, [questionDetails]);
+  }, [parsedQuestionDetails]);
 
   // 1. Define your form.
   const form = useForm<z.infer<typeof questionSchema>>({
