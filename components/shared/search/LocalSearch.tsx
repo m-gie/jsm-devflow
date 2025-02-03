@@ -12,12 +12,14 @@ const LocalSearch = ({
   placeholder,
   imgSrc,
   otherClasses,
+  resetPageCount,
 }: {
   route: string;
   iconPosition: string;
   placeholder: string;
   imgSrc: string;
   otherClasses?: string;
+  resetPageCount: boolean;
 }) => {
   const router = useRouter();
   const pathname = usePathname();
@@ -28,10 +30,14 @@ const LocalSearch = ({
   const [search, setSearch] = useState(query || "");
 
   useEffect(() => {
+    const currentParams = new URLSearchParams(searchParams.toString());
     const delayDebounceFunction = setTimeout(() => {
       if (search) {
+        if (resetPageCount) {
+          currentParams.delete("page");
+        }
         const newUrl = formUrlQuery({
-          params: searchParams.toString(),
+          params: currentParams.toString(),
           key: "q",
           value: search,
         });
@@ -47,7 +53,7 @@ const LocalSearch = ({
       }
     }, 500);
     return () => clearTimeout(delayDebounceFunction);
-  }, [search, route, pathname, router, searchParams, query]);
+  }, [search, route, pathname, router, searchParams, query, resetPageCount]);
 
   return (
     <div

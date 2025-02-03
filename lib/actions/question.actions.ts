@@ -19,12 +19,12 @@ import { revalidatePath } from "next/cache";
 import Answer from "@/database/answer.model";
 import Interaction from "@/database/interaction.model";
 import { FilterQuery } from "mongoose";
+import console from "console";
 
 export async function getQuestions(params: GetQuestionsParams) {
   try {
     connectToDatabase();
-    console.log("I AM THE LOG");
-    const { searchQuery, filter, page = 1, pageSize = 20 } = params;
+    const { searchQuery, filter, page = 1, pageSize = 5 } = params;
 
     const skipAmount = (page - 1) * pageSize;
 
@@ -53,6 +53,8 @@ export async function getQuestions(params: GetQuestionsParams) {
         break;
     }
 
+    const count = await Question.countDocuments(query);
+
     const questions = await Question.find(query)
       .populate({ path: "tags", model: Tag })
       .populate({ path: "author", model: User })
@@ -62,8 +64,9 @@ export async function getQuestions(params: GetQuestionsParams) {
 
     const totalQuestions = await Question.countDocuments(query);
     const isNext = totalQuestions > skipAmount + questions.length;
+    const resetPageCount = count < skipAmount;
 
-    return { questions, isNext };
+    return { questions, isNext, resetPageCount };
   } catch (error) {
     console.log(error);
     throw error;
@@ -393,8 +396,9 @@ export async function getRecommendedQuestions(params: RecommendedParams) {
       .limit(pageSize);
 
     const isNext = totalQuestions > skipAmount + recommendedQuestions.length;
+    const resetPageCount = totalQuestions < skipAmount;
 
-    return { questions: recommendedQuestions, isNext };
+    return { questions: recommendedQuestions, isNext, resetPageCount };
   } catch (error) {
     console.error("Error getting recommended questions:", error);
     throw error;

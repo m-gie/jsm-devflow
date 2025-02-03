@@ -65,6 +65,7 @@ const Home = async ({ searchParams }: SearchParamsProps) => {
           imgSrc="/assets/icons/search.svg"
           placeholder="Search questions..."
           otherClasses="flex-1"
+          resetPageCount={result.resetPageCount}
         />
         <Filter
           filters={HomePageFilters}
